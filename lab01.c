@@ -17,7 +17,7 @@ int strlength(char *str){
     return len;
 }
 
-void insertionSort(int arr[], int size){
+void insertionSort(int *arr, int size){
     int i = 1;
     while(i < size){
         int j = i;
