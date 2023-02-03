@@ -61,14 +61,8 @@ void set_name(student1 *ps, char *str){
 }
 
 //question 6
-void destroy_block1(student1 **pps, int n_students){
-    // for(int i=0; i<n_students; i++){
-    //     free(((*pps)+i)->name);
-    //     free(((*pps)+i)->student_number);
-    //     free(((*pps)+i)->year);
-    //     free((*pps)+i);
-    // }
-    free((*pps));
+void destroy_block1(student1 *pps, int n_students){
+    free(pps);
 }
 
 //quetions 7
@@ -80,13 +74,45 @@ typedef struct student2{
 
 void create_block2(student2 **p_p_s, int n_students){
     *p_p_s = (student2 *)malloc(n_students * sizeof(student2));
+    for(int i=0; i<n_students; i++){
+        (*p_p_s)[i].name = 0;
+        (*p_p_s)[i].student_number = 0;
+    }
+}
 
+void print_student2_info(student2 stu){
+    printf("name: %s\n", stu.name);
+    printf("student #: %s\n", stu.student_number);
+    printf("Year: %d\n", stu.year);
 }
 
 //question 8
-
+void set_name2(student2 *ps, char *str){
+    int l = strlen(str);
+    (*ps).name = (char *)malloc(l*sizeof(char));
+    strcpy(ps->name, str);
+}
 
 //question 9
+void destroy_block2(student2 **pps, int n_students){
+    for(int i=0; i<n_students; i++){
+        if(((*pps)+i)->name != 0){
+            free(((*pps)+i)->name);
+        }
+        if( ((*pps)+i)->student_number != 0){
+            free(((*pps)+i)->student_number);
+        }
+    }
+    free(*pps);
+}
+
+//question 10
+/*
+student2 will have an effect, but only on the variable name and student number. Since these 2 varaibles
+are initiated as a pointer to char. When a local copy of student 2 is created when passing it into a function
+a copy of the adress of these 2 variable is passed. Thus, any modification inside the function will also be
+effective outside of the function.
+*/
 
 //question 13
 void print_file_contents(char *fname){
@@ -137,7 +163,7 @@ int main(){
     set_default_name(&stu1);
     print_student_info(stu1);
     printf("\n");
-    /*
+
     student1 *ps;
     int num_students = 3;
     create_block1(&ps, num_students);
@@ -162,9 +188,20 @@ int main(){
     print_student_info(stu1);
     printf("\n");
 
-    destroy_block1(&ps, num_students);
+    destroy_block1(ps, num_students);
     printf("\n");
-    */
+    
+
+    student2 *st2;
+    num_students = 3;
+    create_block2(&st2, num_students);
+    set_name2((st2+1), "James");
+    set_name2((st2), "Aiden");
+    for(int i=0; i<num_students; i++){
+        print_student2_info(*(st2+i));
+    }
+    destroy_block2(&st2, num_students);
+    printf("\n");
 
     print_file_contents("lab3_13.txt");
     printf("\n");
