@@ -1,4 +1,7 @@
 #include "autocomplete.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 int main(void)
 {
@@ -12,6 +15,8 @@ int main(void)
     int n_answer;
     autocomplete(&answer, &n_answer, terms, nterms, "Tor");
     //free allocated blocks here -- not required for the project, but good practice
+    free(terms);
+    free(answer);
     return 0;
 }
 
