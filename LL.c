@@ -59,8 +59,8 @@ void LL_insert(LL *my_list, int new_elem, int index)
     // TODO
     //insert new_elem at index index in linked list my_list
 
-    node *n = (node*)malloc(sizeof(node));
-    n->data = new_elem;
+    node *n;
+    create_node(&n, new_elem);
 
     if(index < 0 || index >= my_list->size){
         printf("insert: Index out of bound!!!!!!\n");
@@ -187,11 +187,9 @@ void AL_insert(ArrayList *my_list, int new_elem, int index)
     if(my_list->size == my_list->capacity){
         my_list->capacity *= 2;
         my_list->data = (int*)realloc(my_list->data, sizeof(int)*my_list->capacity);
-        memmove(my_list->data, my_list->data, sizeof(int)*my_list->size);
+        
     }
-    for(int i=my_list->size; i>index; i--){
-        my_list->data[i] = my_list->data[i-1];
-    }
+    memmove(my_list->data +index+1, my_list->data + index, sizeof(int)*(my_list->size - index));
     my_list->data[index] = new_elem;
     my_list->size++;
 }
@@ -203,9 +201,7 @@ void AL_delete(ArrayList *my_list, int index)
         printf("delete: Index out of bound!!!!!!\n");
         return;
     }
-    for(int i=index; i<my_list->size-1; i++){
-        my_list->data[i] = my_list->data[i+1];
-    }
+    memmove(my_list->data + index, my_list->data + index + 1, sizeof(int)*(my_list->size - index - 1));
     my_list->size--;
 }
 
