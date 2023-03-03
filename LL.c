@@ -87,7 +87,7 @@ void LL_delete(LL *my_list, int index)
     node *n_delete;
 
     if(index < 0 || index >= my_list->size){
-        printf("remove: Index out of bound!!!!!!\n");
+        printf("delete: Index out of bound!!!!!!\n");
         return;
     }else if(index == 0){
         n_delete = my_list->head;
@@ -119,10 +119,7 @@ void LL_free_all(LL *my_list)
         cur = nxt;
     }
 
-    my_list->head = NULL;
-    my_list->size = 0;
-    //not sure if it's the above one or below
-    //free(my_list);
+    free(my_list);
 }
 
 int LL_get_rec_helper(node *cur, int index){
@@ -140,7 +137,7 @@ int LL_get_rec(LL *my_list, int index)
     // Use recursion. you must not use for, while, or do-while loops
     // You should use a helper function
     if(index < 0 || index >= my_list->size){
-        printf("remove: Index out of bound!!!!!!\n");
+        printf("get_rec: Index out of bound!!!!!!\n");
         return -1;
     }else{
         return LL_get_rec_helper(my_list->head, index);
@@ -157,8 +154,9 @@ typedef struct ArrayList{
 void create_AL_from_data(ArrayList **p_AL, int *data_arr, int size)
 {
     // TODO
-    *p_AL = (p_AL*)malloc(sizeof(ArrayList));
-    (*p_AL)->size, (*p_AL->capacity) = size;
+    *p_AL = (ArrayList*)malloc(sizeof(ArrayList));
+    (*p_AL)->size = size;
+    (*p_AL)->capacity = size;
     (*p_AL)->data = (int*)malloc(sizeof(int)*size);
     for(int i=0; i<size; i++){
         (*p_AL)->data[i] = data_arr[i];
@@ -169,22 +167,53 @@ void create_AL_from_data(ArrayList **p_AL, int *data_arr, int size)
 void AL_append(ArrayList *my_list, int new_elem)
 {
     // TODO
-    
+    if(my_list->size == my_list->capacity){
+        my_list->capacity *= 2;
+        my_list->data = (int*)realloc(my_list->data, sizeof(int)*my_list->capacity);
+        memmove(my_list->data, my_list->data, sizeof(int)*my_list->size);
+    }
+    my_list->data[my_list->size] = new_elem;
+    my_list->size++;
 }
 
 void AL_insert(ArrayList *my_list, int new_elem, int index)
 {
     // TODO
+    if(index < 0 || index >= my_list->size){
+        printf("insert: Index out of bound!!!!!!\n");
+        return;
+    }
+
+    if(my_list->size == my_list->capacity){
+        my_list->capacity *= 2;
+        my_list->data = (int*)realloc(my_list->data, sizeof(int)*my_list->capacity);
+        memmove(my_list->data, my_list->data, sizeof(int)*my_list->size);
+    }
+    for(int i=my_list->size; i>index; i--){
+        my_list->data[i] = my_list->data[i-1];
+    }
+    my_list->data[index] = new_elem;
+    my_list->size++;
 }
 
 void AL_delete(ArrayList *my_list, int index)
 {
     // TODO
+    if(index < 0 || index >= my_list->size){
+        printf("delete: Index out of bound!!!!!!\n");
+        return;
+    }
+    for(int i=index; i<my_list->size-1; i++){
+        my_list->data[i] = my_list->data[i+1];
+    }
+    my_list->size--;
 }
 
 void AL_free(ArrayList *my_list)
 {
     // TODO
+    free(my_list->data);
+    free(my_list);
 }
 
 
@@ -192,6 +221,7 @@ int main()
 {
     int data_arr[] = {1, 2, 3, 4, 5};
     LL *my_list;
+    printf("Test for LL_from_data & append:\n");
     create_LL_from_data(&my_list, data_arr, 5);
     LL_append(my_list, 6);
     node *cur = my_list->head;
@@ -219,13 +249,29 @@ int main()
     printf("Test for LL_get_rec:\n");
     printf("value at index 2: %d\n", LL_get_rec(my_list, 2));
 
-    printf("Test for LL_free_all:\n");
     LL_free_all(my_list);
-    cur = my_list->head;
-    while(cur != NULL){
-        printf("%d\n", cur->data);
-        cur = cur->next;
+
+    ArrayList *my_AL;
+    printf("Test for AL_from_data & append:\n");
+    create_AL_from_data(&my_AL, data_arr, 5);
+    AL_append(my_AL, 6);
+    for(int i=0; i<my_AL->size; i++){
+        printf("%d\n", my_AL->data[i]);
     }
-    
+
+    printf("Test for AL_insert:\n");
+    AL_insert(my_AL, 7, 2);
+    for(int i=0; i<my_AL->size; i++){
+        printf("%d\n", my_AL->data[i]);
+    }
+
+    printf("Test for AL_delete:\n");
+    AL_delete(my_AL, my_AL->size - 1);
+    for(int i=0; i<my_AL->size; i++){
+        printf("%d\n", my_AL->data[i]);
+    }
+
+    AL_free(my_AL);
+
     return 0;
 }
