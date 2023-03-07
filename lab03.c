@@ -169,7 +169,8 @@ int main(){
     create_block1(&ps, num_students);
     for(int i=0; i<num_students; i++){
         printf("Enter Student %d's name: \n", (i+1));
-        scanf("%s", &( (*(ps+i)).name) );
+        //scanf("%s", &( (*(ps+i)).name) );
+        scanf("%s", &((ps+i)->name));
 
         printf("Enter Student %d's #: \n", (i+1));
         scanf("%s", &( (*(ps+i)).student_number) );
