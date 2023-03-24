@@ -59,7 +59,6 @@ uint8_t min(uint8_t a, uint8_t b){
 }
 
 void q2(struct rgb_img *im, struct rgb_img **new5_img){
-    *new5_img = (struct rgb_img*)malloc(sizeof(struct rgb_img) * 5);
     for(int i=0; i<5; i++){
         create_img(&(new5_img[i]), im->height, im->width);
         for(int j=0; j<im->height; j++){
@@ -96,15 +95,18 @@ int main(){
     printf("Question 2:\n");
     struct rgb_img *im;
     read_in_img(&im, "image.bin");
-    struct rgb_img *new5_img;
-    q2(im, &new5_img);
+    struct rgb_img **new5_img = (struct rgb_img**)malloc(sizeof(struct rgb_img*) * 5);
+    printf("check\n");
+    q2(im, new5_img);
+    printf("check1\n");
     for(int i=0; i<5; i++){
-        char filename[50];
+        char filename[20];
         sprintf(filename, "image%d.bin", i);
-        write_img(&(new5_img[i]), filename);
+        write_img(*(new5_img+i), filename);
     }
+    //free
+    for(int i=0; i<5; i++) destroy_image(new5_img[i]);
     free(new5_img);
-    free(im);
 
     return 0;
 }
