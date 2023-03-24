@@ -1,6 +1,6 @@
 class Heap:
     def __init__(self):
-        self.heap = [None]
+        self.heap = [(None, None)] #modified
         self.size = 0
 
     
@@ -38,7 +38,7 @@ class Heap:
 
     def heapify_up(self):
         index = self.size 
-        while self.has_parent(index) and self.parent(index) > self.heap[index]:
+        while self.has_parent(index) and self.parent(index)[0] < self.heap[index][0]: #modified, for q4 as well
             self.swap(self.get_parent_index(index), index)
             index = self.get_parent_index(index)
 
@@ -46,9 +46,9 @@ class Heap:
         index = 1
         while self.has_left_child(index):
             smaller_child_index = self.get_left_child_index(index)
-            if self.has_right_child(index) and self.right_child(index) < self.left_child(index):
+            if self.has_right_child(index) and self.right_child(index)[0] > self.left_child(index)[0]: #modified , for q4 as well
                 smaller_child_index = self.get_right_child_index(index)
-            if self.heap[index] < self.heap[smaller_child_index]:
+            if self.heap[index][0] > self.heap[smaller_child_index][0]: #modified , for q4 as well
                 break
             else:
                 self.swap(index, smaller_child_index)
@@ -58,7 +58,7 @@ class Heap:
     def extract_min(self):
         if self.size == 0:
             return None
-        min = self.heap[1]
+        min = self.heap[1][1]
         self.heap[1] = self.heap[self.size]
         self.heap.pop()
         self.size -= 1
@@ -67,13 +67,20 @@ class Heap:
     
 
 if __name__ == '__main__':
-    h = Heap()
-    h.insert(5)
-    h.insert(3)
-    h.insert(8)
-    print(h.extract_min())
-    print(h.extract_min())
-    print(h.extract_min())
+    # h = Heap()
+    # h.insert(5)
+    # h.insert(3)
+    # h.insert(8)
+    # print(h.extract_min())
+    # print(h.extract_min())
+    # print(h.extract_min())
     
+    h = Heap()
+    h.insert((5, "a"))
+    h.insert((2, "b"))
+    h.insert((3, "c"))
+    print(h.extract_min()) # "b"
+    print(h.extract_min()) # "c"
+    print(h.extract_min()) # "a"
     
     
