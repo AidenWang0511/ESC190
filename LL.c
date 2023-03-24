@@ -170,7 +170,6 @@ void AL_append(ArrayList *my_list, int new_elem)
     if(my_list->size == my_list->capacity){
         my_list->capacity *= 2;
         my_list->data = (int*)realloc(my_list->data, sizeof(int)*my_list->capacity);
-        memmove(my_list->data, my_list->data, sizeof(int)*my_list->size);
     }
     my_list->data[my_list->size] = new_elem;
     my_list->size++;
