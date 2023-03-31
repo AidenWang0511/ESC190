@@ -25,11 +25,10 @@ int* q1b(int *d, int d_size, int target){
 int* q1c(int *d, int d_size, int target){
     int *ans = (int*) malloc(sizeof(int)*(target+1));
     ans[0] = 0;
-    ans[1] = 1;
     for(int i=2; i<=target; i++) ans[i] = INT_MAX;
 
     int *coin = (int*) malloc(sizeof(int)*(target+1));
-    for(int i=2; i<=target; i++){
+    for(int i=1; i<=target; i++){
         for(int j=0; j<d_size; j++){
             int a = d[j];
             if(a<=i && ans[i-a] != INT_MAX && ans[i-a] + 1 < ans[i]){
