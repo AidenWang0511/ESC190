@@ -4,8 +4,6 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-
-
 typedef struct Heap {
     int* heap;
     int size;
