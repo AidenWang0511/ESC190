@@ -1,8 +1,4 @@
 import numpy as np
-
-
-
-
 class Node:
     def __init__(self, value):
         self.value = value
@@ -35,3 +31,18 @@ def dijkstra(start, end):
         visited.add(current)
     return current.distance_from_start
                                                 
+if __name__ == '__main__':
+    nodes = []
+    for i in range(5):
+        nodes.append(Node(i))
+    
+    nodes[0].connections.append(Con(nodes[1], 5))
+    nodes[0].connections.append(Con(nodes[2], 5))
+    nodes[0].connections.append(Con(nodes[3], 5))
+    nodes[0].connections.append(Con(nodes[4], 1000))
+    nodes[1].connections.append(Con(nodes[2], 25))
+    nodes[1].connections.append(Con(nodes[3], 20))
+    nodes[2].connections.append(Con(nodes[3], 0))
+    nodes[3].connections.append(Con(nodes[4], 10))
+
+    print(dijkstra(nodes[0], nodes[4]))
